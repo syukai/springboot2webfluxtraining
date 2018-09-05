@@ -1,5 +1,6 @@
 package com.example.sb2train;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,6 +24,7 @@ public class TrainRestController {
     Flux<Map<String, Integer>> stream() {
         Stream<Integer> stream = Stream.iterate(0, i -> i + 1); // Java8の無限Stream
         return Flux.fromStream(stream.limit(10))
-                .map(i -> Collections.singletonMap("value", i));
+        		.zipWith(Flux.interval(Duration.ofSeconds(1)))
+                .map(tuple -> Collections.singletonMap("value", tuple.getT1()));
     }
 }
