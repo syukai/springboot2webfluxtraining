@@ -6,10 +6,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("train")
@@ -26,5 +29,10 @@ public class TrainRestController {
         return Flux.fromStream(stream.limit(10))
         		.zipWith(Flux.interval(Duration.ofSeconds(1)))
                 .map(tuple -> Collections.singletonMap("value", tuple.getT1()));
+    }
+    
+    @PostMapping("/echo")
+    Mono<String> echo(@RequestBody Mono<String> body){
+    	return body.map(String::toUpperCase);
     }
 }
