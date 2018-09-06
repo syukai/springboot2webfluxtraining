@@ -31,8 +31,13 @@ public class TrainRestController {
                 .map(tuple -> Collections.singletonMap("value", tuple.getT1()));
     }
     
-    @PostMapping("/echo")
+    @PostMapping(value="/echo")
     Mono<String> echo(@RequestBody Mono<String> body){
     	return body.map(String::toUpperCase);
+    }
+    
+    @PostMapping("/stream")
+    Flux<Map<String, Integer>> stream(@RequestBody Flux<Map<String, Integer>> body) {
+        return body.map(m -> Collections.singletonMap("double", m.get("value") * 2));
     }
 }
