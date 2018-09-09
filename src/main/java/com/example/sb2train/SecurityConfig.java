@@ -17,7 +17,15 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
          http
-         	.authorizeExchange().pathMatchers("/train/**").permitAll();
+         	.authorizeExchange().pathMatchers("/train/").permitAll()
+         	.and()
+         	.authorizeExchange().pathMatchers("/train/echo").permitAll()
+         	.and()
+         	.authorizeExchange().pathMatchers("/train/simpletext").permitAll()
+         	.and()
+         	.authorizeExchange().pathMatchers("/train/stream").hasRole("USER_ROLE")
+         	.and().csrf().disable();
+         	
          return http.build();
     }
 }
